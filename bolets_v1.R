@@ -48,5 +48,12 @@ source("scripts/funcions.R")
 #     -) El tipus de VEGETACIÓP
 
 
+# ---------------------------------------
+# ------------- COMPROVAR QUE FUNCIONA LA FUNCIÓ DE DADES API METEO
+# -----------------------------------------------------------------
+
+
+
+
 
 
