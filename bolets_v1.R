@@ -49,10 +49,18 @@ source("scripts/funcions.R")
 
 
 # ---------------------------------------
-# ------------- COMPROVAR QUE FUNCIONA LA FUNCIÓ DE DADES API METEO
-# -----------------------------------------------------------------
+# ------------- FEIN A FER
+# ----------------------------------------
 
+#     -) Crear DF del punts 
+#     -) Crear columna COORDENADES
 
+#     -) Comprovar que funciona la FUNCIO = create_DF_NO_GEOM()
+#     -) Comprovar que dona les DADES
+
+#     -) Crear un DF amb la MITJA per CADA COMARCA
+#     -) Cada comarca té X PUNTS
+#     -) Cacular la MITJA de les DADES DINS SEU
 
 
 
