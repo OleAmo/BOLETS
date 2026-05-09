@@ -1,7 +1,4 @@
 library(sf)
-library(terra)
-library(tmap)
-library(ggplot2)
 library(dplyr)
 library(readr)
 
@@ -63,5 +60,22 @@ source("scripts/funcions.R")
 #     -) Cacular la MITJA de les DADES DINS SEU
 
 
+
+# -------  CREAR DF amb COORDENADES ------
+# ----------------------------------------
+
+#     -) Vull una funció que passi de GEMETRIA a coordenades
+#     -) Intdrodueixes una geometria 
+#     -) Obtens LAT i LONG en porjecció 4326 = La que usa la API OPEN METEO
+
+
+
+
+coords <- COORDS_create(comarques_punts[1,])
+
+date <- "2024-05-08"
+
+
+DF_BCN <- create_DF_GEOM(coords$lat,coords$long,date,date)
 
 

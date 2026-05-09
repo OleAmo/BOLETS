@@ -2,6 +2,7 @@ library(sf)
 library(httr)
 library(jsonlite)
 library(tidyverse)
+
 #  ------- FUNCIÓ = DADES API ---------
 #  ------------------------------------
 
@@ -256,5 +257,33 @@ create_DF_NO_GEOM <- function(lat,long,data_1,data_2){
   
 }
 
+
+
+#  ------- FUNCIÓ = LAT i LONG ---------
+#  -------------------------------------
+
+#    -) OBTENCIÓ de la LATITUD i LONGITUD
+#    -) De Atributs hi ha una GEOMETRIA
+#    -) La transformo a 4326 = la projecció de API METEO
+
+
+COORDS_create <- function(dades){
+  
+  coord_df <- dades %>% 
+    st_transform(crs = 4326) %>% 
+    st_coordinates(comarques_punts[1,])
+  
+  long <- coord_df[1] 
+  lat <- coord_df[2]
+  
+  
+  resultat <- data.frame(
+    lat = lat,
+    long = long
+  )
+  
+  return(resultat)
+  
+}
 
 
