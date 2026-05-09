@@ -71,11 +71,14 @@ source("scripts/funcions.R")
 
 
 
-coords <- COORDS_create(comarques_punts[1,])
+coords <- COORDS_create(comarques_punts[14,])
 
 date <- "2024-05-08"
+lat <- coords$lat
+long <- coords$long
 
+EXEMPLE <- create_DF_GEOM(lat,long,date,date)
 
-DF_BCN <- create_DF_GEOM(coords$lat,coords$long,date,date)
+EXEMPLE 
 
 
