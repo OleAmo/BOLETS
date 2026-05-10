@@ -138,6 +138,9 @@ comarca
 #     -) Crec que ANALITZARÉ TOTS el punts de catalunya
 #     -) I buscaré PATRONS, TAQUES o ILLES de punts idonis
 
+#     -) HE PASSAT A SHAPE
+#     -) Alt Empordà, Baix Empordà, Pla de l'Estany, Garrotxa i Gironès
+
 comarca
 
 st_write(comarca, "data/processed/Baix_Emporda.shp", delete_layer = TRUE)
