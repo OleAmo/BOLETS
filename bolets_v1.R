@@ -6,6 +6,11 @@ library(readr)
 # ----- DADES SHAPE -----
 # -----------------------
 
+#     -) SHAPE creat amb QGIS
+#     -) Son les comarques calatanes amb una malla de punts
+#     -) La Malla és de 5 x 5 km
+#     -) Per tant cada comarca te dins de 20 a 50 punts
+#     -) Acada punt puc saber Temp, Vent,...gràcies a la API Open Meteo
 
 comarques_punts <- st_read("data/raw/COMARQUES_punts.shp")
 
@@ -100,29 +105,36 @@ EXEMPLE$Win_max
 #     -) Pk el MUTATE agafi la GEOMETRY de cada fila he de usar = rowwise()
 #     -) Així m'hagafarà la geometria de CADA FILA
 
-date <- "2024-05-08"
 
-system.time({
-  
-  comarca <- comarques_punts %>%
-  filter(NOMCOMAR == "Baix Empordà") %>%
-  rowwise() %>%
-  mutate(
-    lat = COORDS_create(geometry)$lat,
-    long = COORDS_create(geometry)$long,
-    dades_meteo = list(create_DF_GEOM(lat, long, date, date)),
-    T_max = dades_meteo$T_max,
-    T_min = dades_meteo$T_min,
-    Hum_max = dades_meteo$Hum_max,
-    Hum_min = dades_meteo$Hum_min,
-    Win_max = dades_meteo$Win_max,
-    Win_min = dades_meteo$Win_min
-         ) %>% 
-    select(-dades_meteo)  %>%
-  data.frame()
-  
-})
 
+system.time({ })   # funció per saber que tarda una funció a fer-se
+
+# ------ Exemple UNA COMARCA ------
+# ---------------------------------
+
+#     -) Exemple de creació de PUNTS de UNA COMARCA
+#     -) Així ho visualitzo en QGIS i em faig una idea de distribucions
+#     -) Una comarca tarda de 2 a 4 segons
+#     -) Per tant 42 Comarques = 126 segons
+
+date <- "2024-05-08" 
+comarca <- comarques_punts %>%
+filter(NOMCOMAR == "Baix Empordà") %>%
+rowwise() %>%
+mutate(
+  lat = COORDS_create(geometry)$lat,
+  long = COORDS_create(geometry)$long,
+  dades_meteo = list(create_DF_GEOM(lat, long, date, date)),
+  T_max = dades_meteo$T_max,
+  T_min = dades_meteo$T_min,
+  Hum_max = dades_meteo$Hum_max,
+  Hum_min = dades_meteo$Hum_min,
+  Win_max = dades_meteo$Win_max,
+  Win_min = dades_meteo$Win_min
+       ) %>% 
+  select(-dades_meteo)  %>%
+data.frame()
+  
 comarca
 
 
@@ -145,4 +157,32 @@ comarca
 
 st_write(comarca, "data/processed/Baix_Emporda.shp", delete_layer = TRUE)
 
+
+# ------ Exemple TOTES COMARQUES ------
+# ---------------------------------
+
+#     -) En fer TOTES les comarques ha tardat 143 seg = 2.5 min
+#     -) Les gravo a SHAPE
+
+
+date <- "2024-05-08" 
+system.time({ 
+  comarques <- comarques_punts %>%
+    rowwise() %>%
+    mutate(
+      lat = COORDS_create(geometry)$lat,
+      long = COORDS_create(geometry)$long,
+      dades_meteo = list(create_DF_GEOM(lat, long, date, date)),
+      T_max = dades_meteo$T_max,
+      T_min = dades_meteo$T_min,
+      Hum_max = dades_meteo$Hum_max,
+      Hum_min = dades_meteo$Hum_min,
+      Win_max = dades_meteo$Win_max,
+      Win_min = dades_meteo$Win_min
+    ) %>% 
+    select(-dades_meteo)  %>%
+    data.frame()
+})
+
+st_write(comarques, "data/processed/comarques_2024_05_08.shp", delete_layer = TRUE)
 
