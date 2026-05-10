@@ -88,32 +88,58 @@ EXEMPLE <- create_DF_GEOM(lat,long,date,date)
 EXEMPLE$Win_max 
 
 
-# ------  CREAR DF MITJA TEMP COMARQUES -------
+# -----  CREAR TEMP TOTS PUNTS DE COMARCA -----
 # ---------------------------------------------
 
-#     -) Vull una DF de totes les comarque
-#     -) Creo una columna amb LAT i LONG
+#     -) Vull una DF de CADA COMARCA 
+#     -) De cada comarca tinc una MALLA de 5000 m
+#     -) Per tant de cada 5 km tinc DADES
 
+#     CREAR DF:
+#     -) Creo una columna amb LAT i LONG
 #     -) Pk el MUTATE agafi la GEOMETRY de cada fila he de usar = rowwise()
 #     -) Així m'hagafarà la geometria de CADA FILA
 
 date <- "2024-05-08"
 
-comarca <- comarques_punts %>%
-  filter(NOMCOMAR == "Alt Empordà") %>%
+system.time({
+  
+  comarca <- comarques_punts %>%
+  filter(NOMCOMAR == "Baix Empordà") %>%
   rowwise() %>%
   mutate(
     lat = COORDS_create(geometry)$lat,
     long = COORDS_create(geometry)$long,
-    T_max = create_DF_GEOM(lat,long,date,date)$T_max,
-    T_min = create_DF_GEOM(lat,long,date,date)$T_min,
-    Hum_max = create_DF_GEOM(lat,long,date,date)$Hum_max,
-    Hum_min = create_DF_GEOM(lat,long,date,date)$Hum_min,
-    Win_max = create_DF_GEOM(lat,long,date,date)$Win_max,
-    Win_min = create_DF_GEOM(lat,long,date,date)$Win_min
+    dades_meteo = list(create_DF_GEOM(lat, long, date, date)),
+    T_max = dades_meteo$T_max,
+    T_min = dades_meteo$T_min,
+    Hum_max = dades_meteo$Hum_max,
+    Hum_min = dades_meteo$Hum_min,
+    Win_max = dades_meteo$Win_max,
+    Win_min = dades_meteo$Win_min
          ) %>% 
+    select(-dades_meteo)  %>%
   data.frame()
+  
+})
 
 comarca
+
+
+# -----  HO PASSO A SHAPE -----
+# -----------------------------
+
+#     -) Ho passo a SHAPE per veure patrons visuals amb QGIS
+#     -) No tinc clar com analitzar les dades de CATALUNYA
+
+#     -) Una opció és CALCULAR la mitja de CADA COMARCA
+#     -) Però llavors perdo AFINITAT a l'hora de trobar llocs idonis per bolets
+
+#     -) Crec que ANALITZARÉ TOTS el punts de catalunya
+#     -) I buscaré PATRONS, TAQUES o ILLES de punts idonis
+
+comarca
+
+st_write(comarca, "data/processed/Baix_Emporda.shp", delete_layer = TRUE)
 
 
