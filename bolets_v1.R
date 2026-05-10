@@ -61,15 +61,22 @@ source("scripts/funcions.R")
 
 
 
-# -------  CREAR DF amb COORDENADES ------
-# ----------------------------------------
+# -------  CREAR FUNCIÓ per obtenir COORDENADES ------
+# ----------------------------------------------------
 
 #     -) Vull una funció que passi de GEMETRIA a coordenades
 #     -) Intdrodueixes una geometria 
 #     -) Obtens LAT i LONG en porjecció 4326 = La que usa la API OPEN METEO
 
+#     -) He creat la funció al arxu = funcions.R
 
 
+#     COMPROVACIÓ
+# ----------------
+
+#     -) Comprovo que la funcio de crear LAT i LONG funciona
+#     -) La uso i ho compmrovo
+#     -) De pas comprovo que la funció de obtenir DADES de METEO API funciona
 
 coords <- COORDS_create(comarques_punts[14,])
 
@@ -78,7 +85,35 @@ lat <- coords$lat
 long <- coords$long
 
 EXEMPLE <- create_DF_GEOM(lat,long,date,date)
+EXEMPLE$Win_max 
 
-EXEMPLE 
+
+# ------  CREAR DF MITJA TEMP COMARQUES -------
+# ---------------------------------------------
+
+#     -) Vull una DF de totes les comarque
+#     -) Creo una columna amb LAT i LONG
+
+#     -) Pk el MUTATE agafi la GEOMETRY de cada fila he de usar = rowwise()
+#     -) Així m'hagafarà la geometria de CADA FILA
+
+date <- "2024-05-08"
+
+comarca <- comarques_punts %>%
+  filter(NOMCOMAR == "Alt Empordà") %>%
+  rowwise() %>%
+  mutate(
+    lat = COORDS_create(geometry)$lat,
+    long = COORDS_create(geometry)$long,
+    T_max = create_DF_GEOM(lat,long,date,date)$T_max,
+    T_min = create_DF_GEOM(lat,long,date,date)$T_min,
+    Hum_max = create_DF_GEOM(lat,long,date,date)$Hum_max,
+    Hum_min = create_DF_GEOM(lat,long,date,date)$Hum_min,
+    Win_max = create_DF_GEOM(lat,long,date,date)$Win_max,
+    Win_min = create_DF_GEOM(lat,long,date,date)$Win_min
+         ) %>% 
+  data.frame()
+
+comarca
 
 
