@@ -69,7 +69,7 @@ source("scripts/funcions.R")
 
 coords <- COORDS_create(comarques_punts[14,])
 
-date <- "2024-05-08"
+date <- "2026-05-10"
 lat <- coords$lat
 long <- coords$long
 
@@ -178,13 +178,16 @@ st_write(comarques, "data/processed/comarques_2024_05_08.shp", delete_layer = TR
 # ----------      FEINA A FER    ----------
 # *****************************************
 
-#     -) He de pensar que fer-
+#     -) He de pensar que fer
 #     -) He de trobar els PUNTS IDONIS pel CREIXEMENT de bolets
 
 #     -) Què vol dir PUNTS IDONIS?
 #     -) Poc Vent + Molta Humitat + Molta Temp?
 #     -) Fa falta la pluja?
 #     -) Quin sòn els RANGS IDEALS?
+
+#     -) Comprovar que les DADES API són correctes
+#     -) Potser és més precis amb les dades de la API del METEOCAT?
 
 #     -) Calculo també els ÚLTIMS DIES?
 #     -) Tinc en compte els ÚLTIMS DIES? Quans dies SON?
