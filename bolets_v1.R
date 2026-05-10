@@ -50,22 +50,6 @@ source("scripts/funcions.R")
 #     -) El tipus de VEGETACIÓP
 
 
-# ---------------------------------------
-# ------------- FEIN A FER
-# ----------------------------------------
-
-#     -) Crear DF del punts 
-#     -) Crear columna COORDENADES
-
-#     -) Comprovar que funciona la FUNCIO = create_DF_NO_GEOM()
-#     -) Comprovar que dona les DADES
-
-#     -) Crear un DF amb la MITJA per CADA COMARCA
-#     -) Cada comarca té X PUNTS
-#     -) Cacular la MITJA de les DADES DINS SEU
-
-
-
 # -------  CREAR FUNCIÓ per obtenir COORDENADES ------
 # ----------------------------------------------------
 
@@ -161,8 +145,12 @@ st_write(comarca, "data/processed/Baix_Emporda.shp", delete_layer = TRUE)
 # ------ Exemple TOTES COMARQUES ------
 # ---------------------------------
 
-#     -) En fer TOTES les comarques ha tardat 143 seg = 2.5 min
+#     -) Creo un DF amb TOTS els punts de CATALUNYA
+#     -) De cada un calculo les DADES (T_max, T_min, Hum,...)
+
+#     -) En fer TOTES les comarques la funció ha tardat 143 seg = 2.5 min
 #     -) Les gravo a SHAPE
+#     -) Així puc mirar patrons visuals
 
 
 date <- "2024-05-08" 
@@ -185,4 +173,23 @@ system.time({
 })
 
 st_write(comarques, "data/processed/comarques_2024_05_08.shp", delete_layer = TRUE)
+
+# *****************************************
+# ----------      FEINA A FER    ----------
+# *****************************************
+
+#     -) He de pensar que fer-
+#     -) He de trobar els PUNTS IDONIS pel CREIXEMENT de bolets
+
+#     -) Què vol dir PUNTS IDONIS?
+#     -) Poc Vent + Molta Humitat + Molta Temp?
+#     -) Fa falta la pluja?
+#     -) Quin sòn els RANGS IDEALS?
+
+#     -) Calculo també els ÚLTIMS DIES?
+#     -) Tinc en compte els ÚLTIMS DIES? Quans dies SON?
+
+#     -) Un cop fet ho passo a SHINY
+
+
 
