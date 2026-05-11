@@ -101,7 +101,7 @@ system.time({ })   # funció per saber que tarda una funció a fer-se
 #     -) Una comarca tarda de 2 a 4 segons
 #     -) Per tant 42 Comarques = 126 segons
 
-date <- "2024-05-08" 
+date <- "2025-11-07" # és una data de TARDOR
 comarca <- comarques_punts %>%
 filter(NOMCOMAR == "Baix Empordà") %>%
 rowwise() %>%
@@ -153,7 +153,7 @@ st_write(comarca, "data/processed/Baix_Emporda.shp", delete_layer = TRUE)
 #     -) Així puc mirar patrons visuals
 
 
-date <- "2024-05-08" 
+date <- "2025-11-07" # és una data de TARDOR
 system.time({ 
   comarques <- comarques_punts %>%
     rowwise() %>%
@@ -172,7 +172,7 @@ system.time({
     data.frame()
 })
 
-st_write(comarques, "data/processed/comarques_2024_05_08.shp", delete_layer = TRUE)
+st_write(comarques, "data/processed/comarques_2025_11_07.shp", delete_layer = TRUE)
 
 # *****************************************
 # ----------      FEINA A FER    ----------
