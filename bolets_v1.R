@@ -174,6 +174,60 @@ system.time({
 
 st_write(comarques, "data/processed/comarques_2025_11_07.shp", delete_layer = TRUE)
 
+comarques_2025_11_07 <- st_read("data/processed/comarques_2025_11_07.shp")
+
+comarques_2025_11_07
+
+
+#     EXEMPLE D'INDEX
+# -------------------
+
+#     -) Són dades tretes ràpidament del GOOGLE
+#     -) He de buscar informació més precissa
+
+#     -) Rang de HUMITAT Max = 80-90 %
+#     -) Rang de HUMITAT Min =
+#     -) Rang de Temperatuta Max =  10-18 °C
+#     -) Rang de Temperatuta Min = >= 5
+#     -) Rang de Vent Max = 4 punts x sobre de la minima
+
+#     -) INDEX = de 0 a 8 punts
+#     -) 8 Punts = Té TOTES les CONDICIONS ÒPTIMES
+
+#     -) INDEX 2 = de 0 a 4 punts
+#     -) 8 Punts = Té TOTES les CONDICIONS MAXIMES ÒPTIMES
+
+#     -) Cada punt del mapa tindrè un màxim de 8 punts
+#     -) Si té la Tmax ideal = +1, si té T_min ideal = +1 ,....
+
+#     -) Pertant el PUNTS amb 8 punts tindran el màxim de valor x creixer bolets
+
+
+comarques_2025_11_07_index <- comarques_2025_11_07 %>%
+  
+  mutate(
+    T_max_opt = ifelse(T_max >= 10 & T_max <= 18, 1, 0),
+    T_min_opt = ifelse(T_min >= 5 & T_min < 10, 1, 0),
+    Hum_max_opt = ifelse(Hum_max >= 80 & Hum_max <= 90, 1, 0),
+    Hum_min_opt = ifelse(Hum_min >= 70 & Hum_min <= 80, 1, 0),
+    Win_max_opt = ifelse(Win_max >= 4 & Win_max <= 8, 1, 0),
+    Win_min_opt = ifelse(Win_min >= 2 & Win_min <= 3, 1, 0),
+    Index = T_max_opt+T_min_opt+Hum_max_opt+Hum_min_opt+Win_max_opt+Win_min_opt,
+    Index_2 = T_max_opt+Hum_max_opt+Win_max_opt
+    
+  )
+
+comarques_2025_11_07_index
+
+# ---- GUARDAR SHAPE
+# ------------------
+
+#     -) Guardo i visualitzo amb QGIS
+
+st_write(comarques_2025_11_07_index, "data/processed/comarques_2025_11_07_index.shp", delete_layer = TRUE)
+
+
+
 # *****************************************
 # ----------      FEINA A FER    ----------
 # *****************************************
@@ -186,6 +240,12 @@ st_write(comarques, "data/processed/comarques_2025_11_07.shp", delete_layer = TR
 #     -) Fa falta la pluja?
 #     -) Quin sòn els RANGS IDEALS?
 
+#     -) Millorar INDEX
+#     -) Buscar dades més correctes
+#     -) Buscar quines son les DADES que MES AFECTEN
+#     -) Potser la temperatura te menys pes i el VENT afecta MOLT
+#     -) Haures de usar % per fer el índex final
+
 #     -) Comprovar que les DADES API són correctes
 #     -) Potser és més precis amb les dades de la API del METEOCAT?
 
@@ -193,6 +253,5 @@ st_write(comarques, "data/processed/comarques_2025_11_07.shp", delete_layer = TR
 #     -) Tinc en compte els ÚLTIMS DIES? Quans dies SON?
 
 #     -) Un cop fet ho passo a SHINY
-
 
 
