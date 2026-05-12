@@ -235,12 +235,15 @@ st_write(comarques_2025_11_07_index, "data/processed/comarques_2025_11_07_index.
 #     -) He de pensar que fer
 #     -) He de trobar els PUNTS IDONIS pel CREIXEMENT de bolets
 
+#     PUNTS IDONIS:
+
 #     -) Què vol dir PUNTS IDONIS?
 #     -) Poc Vent + Molta Humitat + Molta Temp?
 #     -) Fa falta la pluja?
 #     -) Quin sòn els RANGS IDEALS?
 
-#     -) Millorar INDEX
+#     MILLORAR ÍNDEX:
+
 #     -) Buscar dades més correctes
 #     -) Buscar quines son les DADES que MES AFECTEN
 #     -) Potser la temperatura te menys pes i el VENT afecta MOLT
