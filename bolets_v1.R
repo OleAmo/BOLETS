@@ -317,5 +317,24 @@ comarques_setmana <- function(comarques_punts,date){
 
 exemple <- comarques_setmana(comarques_punts,"2025-11-07")
 
-exemple$dia_1$T_max
+exemple$dia_1
 exemple$dia_7
+
+
+#     -) Ara he de CALCULAR LA MITJA
+#     -) I extreuren informació
+
+#  T_MAX = per PUNT 1 = als 7 DIES
+
+exemple$dia_1$T_max[1]
+exemple$dia_2$T_max[1]
+exemple$dia_3$T_max[1]
+exemple$dia_4$T_max[1]
+exemple$dia_5$T_max[1]
+exemple$dia_6$T_max[1]
+exemple$dia_7$T_max[1]
+
+
+
+
+
