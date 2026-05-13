@@ -267,5 +267,85 @@ st_write(comarques_2025_11_07_index, "data/processed/comarques_2025_11_07_index.
 #     -) Calcular 7 dies 
 #     -) I veure com puc calcular INDEXs 
 
+#     -) Creeo una FUNCIÓ
+#     -) Calculara diferents DF x diferents dies
 
 
+comarques_setmana <- function(comarques_punts,date){
+  
+  # ------- CALCULAR LES 7 DATES CAP ENRERE
+  # ---------------------------------------
+  
+  comarca <- comarques_punts %>%
+    filter(NOMCOMAR == "Berguedà") %>%
+    rowwise() %>%
+    mutate(
+      lat = COORDS_create(geometry)$lat,
+      long = COORDS_create(geometry)$long,
+      dades_meteo = list(create_DF_GEOM(lat, long, date, date)),
+      T_max = dades_meteo$T_max,
+      T_min = dades_meteo$T_min,
+      Hum_max = dades_meteo$Hum_max,
+      Hum_min = dades_meteo$Hum_min,
+      Win_max = dades_meteo$Win_max,
+      Win_min = dades_meteo$Win_min
+    ) %>% 
+    select(-dades_meteo)  %>%
+    data.frame()
+  
+  
+  
+  return(list(
+    dia_1 = comarca,
+    dia_2 = comarca
+    
+    # --------- FER FINS DIA 7
+    # -------------------------
+    
+    
+  ))
+}
+
+
+
+# ---------- PROVES DE CALCULS DE DIES ENRERER
+# --------------------------------------------
+
+date <- "2025-11-07" # és una data de TARDOR
+
+for (i in 0:6){
+  date <- as.Date(date)-i
+  date <- as.character(date)
+  print(date)
+
+  
+}
+
+
+
+n <- as.Date(date)-1
+print(n)
+
+
+
+n <- as.character(n)
+class(n)
+
+comarca <- comarques_punts %>%
+  filter(NOMCOMAR == "Berguedà") %>%
+  rowwise() %>%
+  mutate(
+    lat = COORDS_create(geometry)$lat,
+    long = COORDS_create(geometry)$long,
+    dades_meteo = list(create_DF_GEOM(lat, long, date, date)),
+    T_max = dades_meteo$T_max,
+    T_min = dades_meteo$T_min,
+    Hum_max = dades_meteo$Hum_max,
+    Hum_min = dades_meteo$Hum_min,
+    Win_max = dades_meteo$Win_max,
+    Win_min = dades_meteo$Win_min
+  ) %>% 
+  select(-dades_meteo)  %>%
+  data.frame()
+
+comarca
