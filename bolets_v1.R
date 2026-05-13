@@ -324,7 +324,11 @@ exemple$dia_7
 #     -) Ara he de CALCULAR LA MITJA
 #     -) I extreuren informació
 
-#  T_MAX = per PUNT 1 = als 7 DIES
+#  T_MAX
+#  per PUNT 1
+#  als 7 DIES
+
+#  Ho busco en funció de $ 
 
 exemple$dia_1$T_max[1]
 exemple$dia_2$T_max[1]
@@ -334,6 +338,14 @@ exemple$dia_5$T_max[1]
 exemple$dia_6$T_max[1]
 exemple$dia_7$T_max[1]
 
+
+#  Ho busco en funció NÚMERO
+
+# [[1]][[6]][1]
+
+# DIA - Columna 6 = T_max  - PUNT 1
+
+exemple[[1]][[6]][1]
 
 
 
