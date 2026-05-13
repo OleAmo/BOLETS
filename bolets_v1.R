@@ -258,3 +258,14 @@ st_write(comarques_2025_11_07_index, "data/processed/comarques_2025_11_07_index.
 #     -) Un cop fet ho passo a SHINY
 
 
+
+# -----  PROVA INDEX 7 DIES -----
+# --------------------------------
+
+#     -) Prova d'index amb dades de 7 dies
+#     -) Començar amb UNA COMARCA
+#     -) Calcular 7 dies 
+#     -) I veure com puc calcular INDEXs 
+
+
+
