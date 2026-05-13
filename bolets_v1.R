@@ -376,16 +376,28 @@ exemple$dia_7$T_max[1]
 #  Ho busco en funció NÚMERO
 
 # [[1]]   = DIA
-# [[7]]   = Columna 7 = T_max
+# [[7]]   = Columna 7 = T_max  --> (9 = Hum_Max / 11 = Win_max )
 # [1]     = Punt 1 de la comarca
 
 exemple[[1]][[7]][1]
 exemple[[2]][[7]][1]
 exemple[[3]][[7]][1]
 
+
+# -----  ANALISI TIPUS 1 -----
+# ----------------------------
+
+#     -) Creo 3 STRINGS
+#     -) són les dades de 7 dies de 3 variables
+#     -) Creo 1 Vector
+#     -) Per analitzar VARIANÇA
+
+
 T_max <- "T_max = "
 Hum_max <- "Hum_max = "
 Win_max <- "Win_max = "
+
+T_max_c <- c()
 
 for (i in 1:7) {
   T_ <- exemple[[i]][[7]][1]
@@ -396,10 +408,98 @@ for (i in 1:7) {
   Hum_max <- paste0(Hum_max,Hum_," - ")
   Win_max <- paste0(Win_max,Win_," - ")
   
+  T_max_c <- c(T_max_c,T_)
+  
 }
+
+#     -) Creo 3 STRINGS
+#     -) són les dades de 7 dies de 3 variables
 
 print(T_max)
 print(Hum_max)
 print(Win_max)
+
+
+# -----  ANALISI ESTADÍSTIC -----
+# -------------------------------
+
+#     -) MITJANA
+#     -) DESVIACIÓ
+#     -) COFICIENT DE VARIACIÓ = CV
+
+#     CV < 10%   = molt poc variable
+#     CV 10–20%  = variabilitat moderada
+#     CV >20%    = bastant variable
+#     CV >30%    = molt variable
+
+
+
+mean(T_max_c)  # mitja
+sd(T_max_c)    # desviació
+
+#     -) COFICIENT DE VARIACIÓ = CV
+
+cv_percent <- 100 * sd(T_max_c) / mean(T_max_c)
+cv_percent
+
+
+# -----   COFICIENT DE VARIACIÓ = CV -----
+# ----------------------------------------
+
+#     -) Calculo el CV x 3 dades
+#     -) Depenent del % serà més o menys variable
+
+
+T_max_c <- c()
+H_max_c <- c()
+W_max_c <- c()
+
+for (i in 1:7) {
+  T_ <- exemple[[i]][[7]][1]
+  Hum_ <- exemple[[i]][[9]][1]
+  Win_ <- exemple[[i]][[11]][1]
+
+
+  T_max_c <- c(T_max_c,T_)
+  H_max_c <- c(H_max_c,Hum_)
+  W_max_c <- c(W_max_c,Win_)
+  
+  cv_T <- 100 * sd(T_max_c) / mean(T_max_c)
+  cv_H <- 100 * sd(H_max_c) / mean(H_max_c)
+  cv_W <- 100 * sd(W_max_c) / mean(W_max_c)
+  
+}
+
+cv_T  
+cv_H  
+cv_W
+
+#     CV < 10%   = molt poc variable
+#     CV 10–20%  = variabilitat moderada
+#     CV >20%    = bastant variable
+#     CV >30%    = molt variable
+
+
+#     < 10% → dades molt homogènies → la mitjana és molt representativa
+#     10–20% → variabilitat moderada → la mitjana encara és bastant útil
+#     >20% → la mitjana comença a perdre representativitat
+#     >30% → molta dispersió → la mitjana sola pot ser enganyosa
+
+
+# -----------------
+# -----------------
+
+#     -) Si de cada punt amb 7 dies de dades calculo el CV
+#     -) Podria classificar els punts en 1,2,3,4 = 
+
+#     -) 1 = < 10% = i pertant la MITJA és el valor del PUNT
+#     -) 2 = 10–20% ?= podriem agafar també la mitja
+#     -) 3 - 3 = Massa VARIABILITAT = DEIXEM EL PUNT EN BLANC
+#     -) Així al mapa de QGIS no es veurà res i no afectarà 
+
+
+
+
+
 
 
