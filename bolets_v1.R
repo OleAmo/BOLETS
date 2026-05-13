@@ -1,3 +1,4 @@
+
 library(sf)
 library(dplyr)
 library(readr)
@@ -278,13 +279,11 @@ comarques_setmana <- function(comarques_punts,date){
   
     for (i in 0:6){
       
-    date <- as.Date(date)-i
-    date <- as.character(date)
-    
     comarca <- comarques_punts %>%
       filter(NOMCOMAR == "Berguedà") %>%
       rowwise() %>%
       mutate(
+        data = date,                       
         lat = COORDS_create(geometry)$lat,
         long = COORDS_create(geometry)$long,
         dades_meteo = list(create_DF_GEOM(lat, long, date, date)),
@@ -297,6 +296,9 @@ comarques_setmana <- function(comarques_punts,date){
       ) %>% 
       select(-dades_meteo)  %>%
       data.frame()
+    
+    date <- as.Date(date)-1
+    date <- as.character(date)
     
     resultats[[i+1]] <- comarca
     
@@ -313,6 +315,7 @@ comarques_setmana <- function(comarques_punts,date){
   ))
 }
 
+
 # ---- QUAN TARDA a PROCESSAR UNA COMARCA ?
 # ---- PERÍODE de 7 dies ------------------
 
@@ -324,8 +327,30 @@ system.time({
  exemple <- comarques_setmana(comarques_punts,"2025-11-07")
 }) 
 
-exemple$dia_1
-exemple$dia_7
+# ---- GUARDAR SHAPE
+# ---- vISUALITZO amb QGIS
+# ------------------------
+
+#     -) Guardo els SHAPES
+#     -) visualitzo amb QGIS
+
+
+exemple$dia_1[4][1,]
+exemple$dia_2[4][1,]
+exemple$dia_3[4][1,]
+exemple$dia_4[4][1,]
+exemple$dia_5[4][1,]
+exemple$dia_6[4][1,]
+exemple$dia_7[4][1,]
+
+st_write(exemple$dia_1, "data/processed/Bergueda_2025_11_07.shp", delete_layer = TRUE)
+st_write(exemple$dia_2, "data/processed/Bergueda_2025_11_06.shp", delete_layer = TRUE)
+st_write(exemple$dia_3, "data/processed/Bergueda_2025_11_05.shp", delete_layer = TRUE)
+st_write(exemple$dia_4, "data/processed/Bergueda_2025_11_04.shp", delete_layer = TRUE)
+st_write(exemple$dia_5, "data/processed/Bergueda_2025_11_03.shp", delete_layer = TRUE)
+st_write(exemple$dia_6, "data/processed/Bergueda_2025_11_02.shp", delete_layer = TRUE)
+st_write(exemple$dia_7, "data/processed/Bergueda_2025_11_01.shp", delete_layer = TRUE)
+
 
 
 #     -) Ara he de CALCULAR LA MITJA
@@ -351,21 +376,21 @@ exemple$dia_7$T_max[1]
 #  Ho busco en funció NÚMERO
 
 # [[1]]   = DIA
-# [[6]]   = Columna 6 = T_max
+# [[7]]   = Columna 7 = T_max
 # [1]     = Punt 1 de la comarca
 
-exemple[[1]][[6]][1]
-exemple[[2]][[6]][1]
-exemple[[3]][[6]][1]
+exemple[[1]][[7]][1]
+exemple[[2]][[7]][1]
+exemple[[3]][[7]][1]
 
 T_max <- "T_max = "
 Hum_max <- "Hum_max = "
 Win_max <- "Win_max = "
 
 for (i in 1:7) {
-  T_ <- exemple[[i]][[6]][1]
-  Hum_ <- exemple[[i]][[8]][1]
-  Win_ <- exemple[[i]][[10]][1]
+  T_ <- exemple[[i]][[7]][1]
+  Hum_ <- exemple[[i]][[9]][1]
+  Win_ <- exemple[[i]][[11]][1]
   
   T_max <- paste0(T_max,T_," - ")
   Hum_max <- paste0(Hum_max,Hum_," - ")
