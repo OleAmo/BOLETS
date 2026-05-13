@@ -313,9 +313,16 @@ comarques_setmana <- function(comarques_punts,date){
   ))
 }
 
+# ---- QUAN TARDA a PROCESSAR UNA COMARCA ?
+# ---- PERÍODE de 7 dies ------------------
+
+#     -) Trda 52 seg
+#     -) Es el temps per obtenir els 7 DF
 
 
-exemple <- comarques_setmana(comarques_punts,"2025-11-07")
+system.time({
+ exemple <- comarques_setmana(comarques_punts,"2025-11-07")
+}) 
 
 exemple$dia_1
 exemple$dia_7
@@ -324,9 +331,11 @@ exemple$dia_7
 #     -) Ara he de CALCULAR LA MITJA
 #     -) I extreuren informació
 
-#  T_MAX
-#  per PUNT 1
-#  als 7 DIES
+#     EXEMPLE:
+
+#     -) T_MAX
+#     -) per PUNT 1
+#     -) als 7 DIES
 
 #  Ho busco en funció de $ 
 
@@ -341,12 +350,31 @@ exemple$dia_7$T_max[1]
 
 #  Ho busco en funció NÚMERO
 
-# [[1]][[6]][1]
-
-# DIA - Columna 6 = T_max  - PUNT 1
+# [[1]]   = DIA
+# [[6]]   = Columna 6 = T_max
+# [1]     = Punt 1 de la comarca
 
 exemple[[1]][[6]][1]
+exemple[[2]][[6]][1]
+exemple[[3]][[6]][1]
 
+T_max <- "T_max = "
+Hum_max <- "Hum_max = "
+Win_max <- "Win_max = "
 
+for (i in 1:7) {
+  T_ <- exemple[[i]][[6]][1]
+  Hum_ <- exemple[[i]][[8]][1]
+  Win_ <- exemple[[i]][[10]][1]
+  
+  T_max <- paste0(T_max,T_," - ")
+  Hum_max <- paste0(Hum_max,Hum_," - ")
+  Win_max <- paste0(Win_max,Win_," - ")
+  
+}
+
+print(T_max)
+print(Hum_max)
+print(Win_max)
 
 
