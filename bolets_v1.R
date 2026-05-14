@@ -519,21 +519,24 @@ for(p in 1:num_punts){
       
   }
   
-  lat = exemple$dia_1$lat[p]
-  long = exemple$dia_1$long[p]
-  
   df <- rbind(
     df, data.frame(
-      lat = lat,
-      long= long,
+      T_mitja = mean(T_max_c),
+      Hum_mitja = mean(H_max_c),
+      Win_mitja = mean(W_max_c), 
       T_cv = cv_T, 
       Hum_cv =cv_H, 
-      Win_cv = cv_W
+      Win_cv = cv_W,
+      geometry = comarques_punts$geometry[p]
   ))
 
 }
 
 df
+
+st_write(df, "data/processed/Bergueda_CV.shp", delete_layer = TRUE)
+
+
 
 # -----------------
 # -----------------
