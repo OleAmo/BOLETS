@@ -497,7 +497,7 @@ H_max_c <- c()
 W_max_c <- c()
 
 
-num_punts <- length(exemple[[i]][[7]])
+num_punts <- length(exemple[[1]][[7]])
 
 df <- data.frame()
 
@@ -538,10 +538,18 @@ for(p in 1:num_punts){
 
 df
 
-# ---------- NO SE COM VISUALITZAR !!!!!!!
-# 
+# ---------- HO VISUALITZO 
+# ------------------------
 
- 
+#     -) Ho faig com a CSV 
+#     -) En el QGIS ho obro
+#     -) la goemtria es x = lat i y = long
+
+
+
+st_write(df, "data/processed/Bergueda_2025_11_01_CV.csv", delete_layer = TRUE)
+
+
 
 
 # -----------------
