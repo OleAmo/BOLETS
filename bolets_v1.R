@@ -444,7 +444,7 @@ cv_percent
 
 
 # -----   COFICIENT DE VARIACIÓ = CV -----
-# ----------------------------------------
+# ------------   UN PUNT      ------------
 
 #     -) Calculo el CV x 3 dades
 #     -) Depenent del % serà més o menys variable
@@ -486,6 +486,55 @@ cv_W
 #     >30% → molta dispersió → la mitjana sola pot ser enganyosa
 
 
+# -----   COFICIENT DE VARIACIÓ = CV -----
+# ------------   TOTS PUNTS    ------------
+
+#     -) 
+
+
+T_max_c <- c()
+H_max_c <- c()
+W_max_c <- c()
+
+
+num_punts <- length(exemple[[i]][[7]])
+
+df <- data.frame()
+
+for(p in 1:num_punts){
+  
+  for (i in 1:7) {
+      T_ <- exemple[[i]][[7]][p]
+      Hum_ <- exemple[[i]][[9]][p]
+      Win_ <- exemple[[i]][[11]][p]
+      
+      
+      T_max_c <- c(T_max_c,T_)
+      H_max_c <- c(H_max_c,Hum_)
+      W_max_c <- c(W_max_c,Win_)
+      
+      cv_T <- 100 * sd(T_max_c) / mean(T_max_c)
+      cv_H <- 100 * sd(H_max_c) / mean(H_max_c)
+      cv_W <- 100 * sd(W_max_c) / mean(W_max_c)
+      
+  }
+  
+  lat = exemple$dia_1$lat[p]
+  long = exemple$dia_1$long[p]
+  
+  df <- rbind(
+    df, data.frame(
+      lat = lat,
+      long= long,
+      T_cv = cv_T, 
+      Hum_cv =cv_H, 
+      Win_cv = cv_W
+  ))
+
+}
+
+df
+
 # -----------------
 # -----------------
 
@@ -496,6 +545,7 @@ cv_W
 #     -) 2 = 10–20% ?= podriem agafar també la mitja
 #     -) 3 - 3 = Massa VARIABILITAT = DEIXEM EL PUNT EN BLANC
 #     -) Així al mapa de QGIS no es veurà res i no afectarà 
+
 
 
 
