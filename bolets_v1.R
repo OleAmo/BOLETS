@@ -489,7 +489,7 @@ cv_W
 # -----   COFICIENT DE VARIACIÓ = CV -----
 # ------------   TOTS PUNTS    ------------
 
-#     -) 
+#     -) CV per TOTS els punts
 
 
 T_max_c <- c()
@@ -519,11 +519,14 @@ for(p in 1:num_punts){
       
   }
   
+  
+  
   lat = exemple[[1]]$lat[p]
   long = exemple[[1]]$long[p]
   
   df <- rbind(
     df, data.frame(
+      ID = exemple[[1]]$id[p],
       lat = lat,
       long = long,
       T_mitja = mean(T_max_c),
@@ -550,6 +553,29 @@ df
 st_write(df, "data/processed/Bergueda_2025_11_01_CV.csv", delete_layer = TRUE)
 
 
+# ---------- FER JOIN ----
+# ------------------------
+
+
+#     -) Fer JOIN entre DF i SHAPE
+#     -) Així ho podré veure directament a QGIS
+
+
+bergueda <- comarques_punts %>%
+  filter(NOMCOMAR == "Berguedà")
+
+
+
+shape_join <- bergueda %>%
+  left_join(df, by = "ID")
+
+
+
+# ----------- NO VA!!!!!!!!!!
+
+# ----------- NO VA!!!!!!!!!!
+
+# ----------- NO VA!!!!!!!!!!
 
 
 # -----------------
