@@ -538,17 +538,22 @@ for(p in 1:num_punts){
 
 df
 
-#  --- HO TRANSFORMO A SHAPE 
-# ------ per veureho en QGIS
+# ---------- ara el vull visualitzar
 
-shape <- st_as_sf(
-  df,
-  coords = c("long","lat"),
-  crs = 25831
-)
+shape <- exemple$dia_7 %>% select(-c(data,lat,long,T_max,T_min,Hum_max,Hum_min,Win_max,Win_min))
+shape <- df %>%  
+  rowwise() %>%
+  mutate(
+    T_mitja = T_mitja,
+    Hum_mitja = Hum_mitja,
+    Win_mitja = Win_mitja, 
+    T_cv = cv_T, 
+    Hum_cv =cv_H, 
+    Win_cv = cv_W
+  )
 
-st_write(shape, "data/processed/Bergueda_CV.shp", delete_layer = TRUE)
 
+st_write(shape, "data/processed/Bergueda_cv.shp", delete_layer = TRUE)
 
 
 # -----------------
