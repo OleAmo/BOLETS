@@ -252,7 +252,8 @@ st_write(shape_join, "data/processed/Bergueda_2025_11_01_CV.shp", delete_layer =
 #     -) Així al mapa de QGIS no es veurà res i no afectarà 
 
 
-
+#     -) Si el CV es de 1 o 2 podria dir que les dades de T, H i W son la mitja
+#     -) Pertant en QGIS visulitzaria només els punts de CV 1 i 2
 
 
 
