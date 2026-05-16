@@ -64,7 +64,7 @@ source("scripts/funcions.R")
 #     -) Calculara diferents DF x diferents dies
 
 
-comarques_setmana <- function(comarques_punts,date){
+comarques_setmana <- function(comarques_punts,date,nom_comarca){
   
   date <- date
   resultats <- list()
@@ -72,7 +72,7 @@ comarques_setmana <- function(comarques_punts,date){
     for (i in 0:6){
       
     comarca <- comarques_punts %>%
-      filter(NOMCOMAR == "Berguedà") %>%
+      filter(NOMCOMAR == nom_comarca) %>%
       rowwise() %>%
       mutate(
         data = date,                       
@@ -116,8 +116,12 @@ comarques_setmana <- function(comarques_punts,date){
 
 
 system.time({
- exemple <- comarques_setmana(comarques_punts,"2025-11-07")
+ exemple <- comarques_setmana(comarques_punts,"2025-11-07","Berguedà")
 }) 
+
+system.time({
+  osona <- comarques_setmana(comarques_punts,"2025-11-07","Osona")
+})
 
 
 # -----  ANALISI ESTADÍSTIC -----
@@ -157,6 +161,8 @@ system.time({
 
 #     -) CV per TOTS els punts de UNA COMARCA
 #     -) Creo una funció que recorri tots els punts
+
+
 
 T_max_c <- c()
 H_max_c <- c()
@@ -240,6 +246,102 @@ st_write(shape_join, "data/processed/Bergueda_2025_11_01_CV.shp", delete_layer =
 
 
 
+
+# ---------- CREO FUNCIÓ COMARCA CV ------ 
+# ----------------------------------------
+
+
+#     -) Calculo automaticament CV x COMARCA
+
+comarca_CV <- function(data){
+  
+  
+  T_max_c <- c()
+  H_max_c <- c()
+  W_max_c <- c()
+  
+  
+  num_punts <- length(data[[1]][[7]])
+  
+  df <- data.frame()
+  
+  for(p in 1:num_punts){
+    
+    for (i in 1:7) {
+      T_ <- data[[i]][[7]][p]
+      Hum_ <- data[[i]][[9]][p]
+      Win_ <- data[[i]][[11]][p]
+      
+      
+      T_max_c <- c(T_max_c,T_)
+      H_max_c <- c(H_max_c,Hum_)
+      W_max_c <- c(W_max_c,Win_)
+      
+      cv_T <- 100 * sd(T_max_c) / mean(T_max_c)
+      cv_H <- 100 * sd(H_max_c) / mean(H_max_c)
+      cv_W <- 100 * sd(W_max_c) / mean(W_max_c)
+      
+    }
+    
+    lat = data[[1]]$lat[p]
+    long = data[[1]]$long[p]
+    
+    df <- rbind(
+      df, data.frame(
+        ID = data[[1]]$id[p],
+        lat = lat,
+        long = long,
+        T_mitja = mean(T_max_c),
+        Hum_mitja = mean(H_max_c),
+        Win_mitja = mean(W_max_c), 
+        T_cv = cv_T, 
+        Hum_cv =cv_H, 
+        Win_cv = cv_W
+      ))
+    
+  }
+  
+  return(df)
+  
+}
+
+
+df_osona <- comarca_CV(osona)
+
+df_osona
+
+# ---------- FER JOIN ----
+# ------------------------
+
+
+#     -) Fer JOIN entre DF i SHAPE
+#     -) Així ho podré veure directament a QGIS
+
+
+osona_punts <- comarques_punts %>%
+  filter(NOMCOMAR == "Osona")
+
+length(osona_punts$id)
+length(df_osona$ID)
+
+shape_join_osona <- osona_punts %>%
+  left_join(df_osona, by = c("id" = "ID"))
+
+
+st_write(shape_join_osona, "data/processed/Osona_2025_11_01_CV.shp", delete_layer = TRUE)
+
+
+
+
+
+# ------- ERROOOOOOOOR!!!!!!
+# -------
+# -------  El QGIS de OSONA no sutren TOTS ELS PUNTS!!!!
+
+
+
+
+
 # -----------------
 # -----------------
 
@@ -254,8 +356,5 @@ st_write(shape_join, "data/processed/Bergueda_2025_11_01_CV.shp", delete_layer =
 
 #     -) Si el CV es de 1 o 2 podria dir que les dades de T, H i W son la mitja
 #     -) Pertant en QGIS visulitzaria només els punts de CV 1 i 2
-
-
-
 
 
