@@ -242,14 +242,14 @@ create_shape <- function(points,data,comarca){
 
 system.time({
   
-solsones <- create_shape(comarques_punts,"2025-11-07","Solsonès")
+anoia <- create_shape(comarques_punts,"2025-11-07","Anoia")
 
 })
 
 # ----  GUARDAR SAHPE ----
 # ----------------------
 
-st_write(solsones, "data/processed/Solsones_2025_11_07_CV.shp", delete_layer = TRUE)
+st_write(anoia, "data/processed/Anoia_2025_11_07_CV.shp", delete_layer = TRUE)
 
 
 
