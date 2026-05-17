@@ -123,6 +123,10 @@ system.time({
   osona <- comarques_setmana(comarques_punts,"2025-11-07","Osona")
 })
 
+system.time({
+  lluçanes <- comarques_setmana(comarques_punts,"2025-11-07","Lluçanès")
+})
+
 
 # -----  ANALISI ESTADÍSTIC -----
 # -------------------------------
@@ -252,6 +256,17 @@ st_write(shape_join, "data/processed/Bergueda_2025_11_01_CV.shp", delete_layer =
 
 
 #     -) Calculo automaticament CV x COMARCA
+#     -) li passo DATA
+#     -) DATA = es el resultat de la funció COMARCA_SETMANA
+#     -) Que és un DF amb les DADES dels 7 DIES (temp, humitat,...)
+
+#     -) la funció COMARCA CV fa:
+#     -) calcula per cada punt = MITJANA i DESVIACIO ESTANDARD
+#     -) Un cop les té calcula el CV = COFICIENT DE VARIACIÓ
+#     -) CV pot ser <10% , 10%-20% ,....
+#     -) Com més petit =  MENYS VARIACIÓ de les dades en una setamana
+#     -) Si varia POC = podem dir que en una setmana el valor es la MITJA
+
 
 comarca_CV <- function(data){
   
@@ -288,7 +303,7 @@ comarca_CV <- function(data){
     
     df <- rbind(
       df, data.frame(
-        ID = data[[1]]$id[p],
+        id = data[[1]]$id[p],
         lat = lat,
         long = long,
         T_mitja = mean(T_max_c),
@@ -305,39 +320,87 @@ comarca_CV <- function(data){
   
 }
 
+# ---------- PROCÉS DE CALCUL AUTOMATITZAT V1 ----
+# ------------------------------------------------
 
-df_osona <- comarca_CV(osona)
-
-df_osona
-
-# ---------- FER JOIN ----
-# ------------------------
-
-
-#     -) Fer JOIN entre DF i SHAPE
-#     -) Així ho podré veure directament a QGIS
-
-
-osona_punts <- comarques_punts %>%
-  filter(NOMCOMAR == "Osona")
-
-length(osona_punts$id)
-length(df_osona$ID)
-
-shape_join_osona <- osona_punts %>%
-  left_join(df_osona, by = c("id" = "ID"))
-
-
-st_write(shape_join_osona, "data/processed/Osona_2025_11_01_CV.shp", delete_layer = TRUE)
+#     -) 1r = COMARQUES_SETMANA()
+#     -) 2n = COMARCA_CV
+#     -) 3r = FER JOIN
+#     -) 4rt = GUARDAR SHAPES
 
 
 
+# ==== 1r)  COMARQUES_SETMANA() 
+
+system.time({
+  lluçanes <- comarques_setmana(comarques_punts,"2025-11-07","Lluçanès")
+})
+
+lluçanes
+
+# ==== 2n) COMARCA_CV
+
+df_lluçanes <- comarca_CV(lluçanes)
+
+df_lluçanes
 
 
-# ------- ERROOOOOOOOR!!!!!!
-# -------
-# -------  El QGIS de OSONA no sutren TOTS ELS PUNTS!!!!
+# ==== 3r) JOIN
 
+
+lluçanes_punts <- comarques_punts %>%
+  filter(NOMCOMAR == "Lluçanès")
+
+
+shape_join_lluçanes <- lluçanes_punts %>%
+  left_join(df_lluçanes, by = "id")
+
+
+st_write(shape_join_lluçanes, "data/processed/Llucanes_2025_11_07_CV.shp", delete_layer = TRUE)
+
+
+
+
+# ---------- PROCÉS DE CALCUL AUTOMATITZAT V2 ----
+# ------------------------------------------------
+
+#     -) 1r = COMARQUES_SETMANA()
+#     -) 2n = COMARCA_CV
+#     -) 3r = FER JOIN
+#     -) 4rt = GUARDAR SHAPES
+
+
+create_shape <- function(points,data,comarca){
+  
+  dades_7 <- comarques_setmana(points,data,comarca)
+  
+  df <- comarca_CV(dades_7)
+  
+  df_punts <- comarques_punts %>%
+    filter(NOMCOMAR == comarca)
+  
+  shape_join <- df_punts %>%
+    left_join(df, by = "id")
+  
+  return(shape_join)
+  
+}
+
+
+# ----  CREAR SAHPE ----
+# ----------------------
+
+
+system.time({
+  
+solsones <- create_shape(comarques_punts,"2025-11-07","Solsonès")
+
+})
+
+# ----  GUARDAR SAHPE ----
+# ----------------------
+
+st_write(solsones, "data/processed/Solsones_2025_11_07_CV.shp", delete_layer = TRUE)
 
 
 
