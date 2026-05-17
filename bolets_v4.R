@@ -74,6 +74,11 @@ source("scripts/funcions.R")
 #     -) Es raro pk en BOLETS_V1 abans em funcionava aquesta opció i ara ja no
 #     -) No se que pot ser!!???
 
+#     -) És RARO ja que si cacul el CV comarca per comarca (Bolets_v3) si que va
+#     -) És algo de quan calculo DADES de TOT CATALUNAY
+#     -) I si no puc calcular DADES de tot CAT no podre calcualr CV de tot CAT 
+
+
 system.time({
 
 date <- "2025-11-01"
