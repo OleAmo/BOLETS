@@ -52,6 +52,57 @@ source("scripts/funcions.R")
 
 
 
+
+
+
+# -------------- ERROR ---------------
+# ------------------------------------
+
+
+#     -) NO se pk peró PETA en DADES_METO = list(create_DF_GEOM(lat, long, date, date))
+#     -) Curiosament a BOLETS_V3 per crear COMARCA A COMARCA no PETA
+
+
+
+catalunya <- comarques_punts %>%
+  rowwise() %>%
+  mutate(
+    data = date,                       
+    lat = COORDS_create(geometry)$lat,
+    long = COORDS_create(geometry)$long,
+    dades_meteo = list(create_DF_GEOM(lat, long, date, date))
+    #T_max = dades_meteo$T_max,
+    #T_min = dades_meteo$T_min,
+    #Hum_max = dades_meteo$Hum_max,
+    #Hum_min = dades_meteo$Hum_min,
+    #Win_max = dades_meteo$Win_max,
+    #Win_min = dades_meteo$Win_min
+  ) %>% 
+  #select(-dades_meteo)  %>%
+  data.frame()
+
+date <- as.Date(date)-1
+date <- as.character(date)
+
+
+resultats[[i+1]] <- catalunya
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # -----  PROVA INDEX 7 DIES -----
 # --------------------------------
 
@@ -64,53 +115,9 @@ source("scripts/funcions.R")
 #     -) Calculara diferents DF x diferents dies
 
 
-
-
-# ----- DONA ERROR --- DADES UN DIA A CATALUNYA ----
-# --------------------------------------------------
-
-#     -) Faig una prova de CATALUNYA de UN DIA
-#     -) Em dona ERROR calaular les DADES de CATALUNY de UN DIA
-#     -) Es raro pk en BOLETS_V1 abans em funcionava aquesta opció i ara ja no
-#     -) No se que pot ser!!???
-
-#     -) És RARO ja que si cacul el CV comarca per comarca (Bolets_v3) si que va
-#     -) És algo de quan calculo DADES de TOT CATALUNAY
-#     -) I si no puc calcular DADES de tot CAT no podre calcualr CV de tot CAT 
-
-
-system.time({
-
-date <- "2025-11-01"
-
-catalunya <- comarques_punts %>%
-  rowwise() %>%
-  mutate(
-    data = date,                       
-    lat = COORDS_create(geometry)$lat,
-    long = COORDS_create(geometry)$long,
-    dades_meteo = list(create_DF_GEOM(lat, long, date, date)),
-    T_max = dades_meteo$T_max,
-    T_min = dades_meteo$T_min,
-    Hum_max = dades_meteo$Hum_max,
-    Hum_min = dades_meteo$Hum_min,
-    Win_max = dades_meteo$Win_max,
-    Win_min = dades_meteo$Win_min
-  ) %>% 
-  select(-dades_meteo)  %>%
-  data.frame()
-
-})
-
-
-# ------------------- 
-# --------------------
-
-
-
-
 catalunya_setmana <- function(comarques_punts,date){
   
+  comarques_punts <- comarques_punts
   date <- date
   resultats <- list()
   
@@ -136,7 +143,10 @@ catalunya_setmana <- function(comarques_punts,date){
     date <- as.Date(date)-1
     date <- as.character(date)
     
+    
     resultats[[i+1]] <- catalunya
+    
+    
     
   }
   
