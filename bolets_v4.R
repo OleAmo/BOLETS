@@ -64,6 +64,48 @@ source("scripts/funcions.R")
 #     -) Calculara diferents DF x diferents dies
 
 
+
+
+# ----- DONA ERROR --- DADES UN DIA A CATALUNYA ----
+# --------------------------------------------------
+
+#     -) Faig una prova de CATALUNYA de UN DIA
+#     -) Em dona ERROR calaular les DADES de CATALUNY de UN DIA
+#     -) Es raro pk en BOLETS_V1 abans em funcionava aquesta opció i ara ja no
+#     -) No se que pot ser!!???
+
+system.time({
+
+date <- "2025-11-01"
+
+catalunya <- comarques_punts %>%
+  rowwise() %>%
+  mutate(
+    data = date,                       
+    lat = COORDS_create(geometry)$lat,
+    long = COORDS_create(geometry)$long,
+    dades_meteo = list(create_DF_GEOM(lat, long, date, date)),
+    T_max = dades_meteo$T_max,
+    T_min = dades_meteo$T_min,
+    Hum_max = dades_meteo$Hum_max,
+    Hum_min = dades_meteo$Hum_min,
+    Win_max = dades_meteo$Win_max,
+    Win_min = dades_meteo$Win_min
+  ) %>% 
+  select(-dades_meteo)  %>%
+  data.frame()
+
+})
+
+
+
+
+# ------------------- 
+# --------------------
+
+
+
+
 catalunya_setmana <- function(comarques_punts,date){
   
   date <- date
