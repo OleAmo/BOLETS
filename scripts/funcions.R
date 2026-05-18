@@ -32,6 +32,121 @@ dades_API <- function(lat,long,date_1,date_2){
 }
 
 
+#  ------- FUNCIÓ = COMPROVA ERROSÇRS DADES API ---------
+#  ------------------------------------------------------
+
+#    -) LÍMIT d'us de API OPEN METEO 
+#    -) Per la API gratuïta d’Open-Meteo els límits són aproximadament:
+
+#    -) 10.000 consultes al dia
+#    -) 5.000 consultes per hora
+#    -) 600 consultes per minut
+
+#    -) He creat una funció DADES_API_ERROR
+#    -) És pq si la API dona algun error (aprat del límit d'us)
+#    -) La pugui detectar i NO PETI TOT
+
+#    SOLUCÍÓ CHATGPT = CONSULTES PER LOTS
+
+#    Jo ara faig  
+
+#    -) punt1 → GET(...)
+#    -) punt2 → GET(...)
+#    -) punt3 → GET(...)
+#    -) ...
+#    -) punt2000 → GET(...)
+
+#    Jo he de fer  
+
+#    -) consulta 1 → 100 punts
+#    -) consulta 2 → 100 punts
+#    -) consulta 3 → 100 punts
+
+#    En R ho pots generar així: 
+#    Open-Meteo permet passar vectors separats per comes:
+  
+  
+#    -)   lat_v <- c(42.31,42.36,42.40)
+#    -)   long_v <- c(2.65,2.71,2.80)
+
+dades_API_error <- function(lat, long, date_1, date_2){
+  
+  resultat <- tryCatch({
+    
+    res_2 <- GET(
+      "https://archive-api.open-meteo.com/v1/archive",
+      query = list(
+        latitude = lat,
+        longitude = long,
+        start_date = date_1,
+        end_date = date_2,
+        hourly = "temperature_2m,relative_humidity_2m,wind_speed_10m"
+      ),
+      timeout(20)
+    )
+    
+    # ---- DETECTAR ERROR del GET -------
+    # -----------------------------------
+    
+    #    -) El STATUS_CODE = Detectata tipus de error del GET
+    #    -) ERRORS típics:
+    
+    #    -) 200 = Tot correcte
+    #    -) 404 = pàgina no trobada
+    #    -) 403 = accés prohibit
+    #    -) 429 = massa consultes
+    #    -) 500 = error intern servidor
+    #    -) 503 = servei temporalment caigut
+    
+    #    -) Pertant el IF si  STATUS_CODE diferent de 200 = dic NULL
+    
+    if(status_code(res_2) != 200){
+      return(NULL)
+      
+    }
+    
+    text_2 <- content(res_2, "text", encoding = "UTF-8")
+    dades_2 <- fromJSON(text_2)
+    
+    # ---- NOVA COMPROVACIÓ API -------
+    # ---------------------------------
+    
+    # La API pot respondre 200 però retornar:
+    # $error = TRUE
+    # $reason = "Daily API request limit exceeded"
+    
+    if(!is.null(dades_2$error)){
+      
+      message(
+        "Error API a lat=",lat,
+        " long=",long,
+        " : ",dades_2$reason
+      )
+      
+      return(NULL)
+    }
+    
+    return(dades_2)
+    
+    
+    # ---- DETECTAR ERROR del TRY CACH -------
+    # ----------------------------------------
+    
+    #    -) Si falla aplcio FUNCTION(e) = FUNCIO ERROR
+    #    -) e$message =  És el missatge que donar d'error
+    
+  }, error = function(e){
+    
+    message("Error API a lat=", lat, " long=", long, ": ", e$message)
+    return(NULL)
+    
+  })
+  
+  return(resultat)
+}
+
+
+
 
 # --------- CREACIÓ DADES en f(x) DIES ----------
 # ------------------------------------------------

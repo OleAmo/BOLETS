@@ -19,8 +19,6 @@ comarques_punts <- st_read("data/raw/COMARQUES_punts.shp")
 # ------------------------------------
 
 source("scripts/funcions.R")
-source("scripts/funcions_error.R")
-
 
 #   ---------- OBJECTIU DE LA APP ---------
 #   ---------------------------------------
