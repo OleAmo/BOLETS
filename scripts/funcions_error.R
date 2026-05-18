@@ -54,20 +54,22 @@ dades_API_error <- function(lat, long, date_1, date_2){
 
 
 #  ------- COMPROVO LO DELS ERORS ---------
-#  ------------------------------------
+#  ----------------------------------------
 
+comarques_punts <- st_read("data/raw/COMARQUES_punts.shp")
+
+#  --- COMPROVO
 
 date_1 = "2025-11-07"
 date_2 = "2025-11-07"
-
-comarques_punts <- st_read("data/raw/COMARQUES_punts.shp")
 
 
 num <- length(comarques_punts$id) 
 num
 
-n$hourly$temperature_2m
 
+vector <- c()
+vector_2 <- c()
 
 for (i in 1:num) {
   
@@ -75,18 +77,32 @@ for (i in 1:num) {
   long <- COORDS_create(comarques_punts[i,])$long
   
   id <- comarques_punts[i,]$id
-  n <- dades_API_error(lat,long,date_1,date_1)
-  T_max <- (max(n$hourly$temperature_2m))
+  dades_api <- dades_API(lat,long,date_1,date_1)
+  T_max <- ((dades_api$hourly$temperature_2m))
+  Hum_max <- ((dades_api$hourly$relative_humidity_2m))
   
-  print(paste(id,'-',T_max))
+  text <- paste(id,'-',T_max,'-',Hum_max)
+  
+  vector[i] <- text
+  vector_2[i] <- c(T_max,Hum_max)
+  
+  print(text)
   
   
 }
 
+length(vector)
+
+# ---- hi ha algun NA o NULL ?
+
+which(is.na(vector))
+which(is.null(vector))
+
+which(is.na(vector_2))
+which(is.null(vector_2))
 
 
 dades_api <- dades_API(lat,long,data_1,data_2)
-
 dades_api_processed <- DF_create(dades_api$hourly,data_1,data_2)
 
 
