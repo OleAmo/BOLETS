@@ -84,7 +84,12 @@ for (i in 1:num) {
 }
 
 
+
+dades_api <- dades_API(lat,long,data_1,data_2)
+
+dades_api_processed <- DF_create(dades_api$hourly,data_1,data_2)
+
+
 # --------- SEMBLA QUE FUNCIONI -----------
 # -----------------------------------------
-
 
