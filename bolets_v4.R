@@ -19,6 +19,7 @@ comarques_punts <- st_read("data/raw/COMARQUES_punts.shp")
 # ------------------------------------
 
 source("scripts/funcions.R")
+source("scripts/funcions_error.R")
 
 
 #   ---------- OBJECTIU DE LA APP ---------
@@ -60,27 +61,68 @@ source("scripts/funcions.R")
 
 
 #     -) NO se pk peró PETA en DADES_METO = list(create_DF_GEOM(lat, long, date, date))
-#     -) Curiosament a BOLETS_V3 per crear COMARCA A COMARCA no PETA
+#     -) La funció CREATE_DF_GEOM usa la API
+#     -) Ple que veig de forma ALEATORIA quan uso la API per 2000 punts peta en algun punt
+#     -) Avegades el 1300 a vegades 1900 i algo
+#     -) Deu ser que si es conecta a internet moltes vegades peta
+#     -) He de fer algo pk no peti
+#     -) un canvin a la CRIDA de la API
 
-date <- "2026-11-07"
+#     -) Chat GPT em dona UNA SOLCUÓ
+#     -) Crearé unes FUNCIONS NOVES
+#     -) funcions_error.R
 
-catalunya <- comarques_punts %>%
- filter(NOMCOMAR == "Anoia") %>%
+date <- "2025-11-07"
+
+num <- length(comarques_punts$id) 
+num
+
+
+for (i in 1:num) {
+  
+  comarques_punts[i,]
+  lat <- COORDS_create(comarques_punts[i,])$lat
+  long <- COORDS_create(comarques_punts[i,])$long
+  dades_meteo <- create_DF_GEOM(lat, long, date, date)
+  id <- comarques_punts[i,]$id
+  T_max <- dades_meteo$T_max
+  T_min <- dades_meteo$T_min
+  Hum_max <- dades_meteo$Hum_max
+  Hum_min <- dades_meteo$Hum_min
+  Win_max <- dades_meteo$Win_max
+  Win_min <- dades_meteo$Win_min
+  
+  text <- paste(id,'-',T_max,'-',T_min,'-',Hum_max,'-',Hum_min,'-',Win_max,'-',Win_min )
+  
+  print(text)
+  
+}
+
+
+
+
+#     -) Això PETA a la fila 1142
+#     -) Comprovar que pot ser
+#     -) Fare un FOR fila a fila i que escrigui que surt
+  
+comarques_punts %>%
   rowwise() %>%
   mutate(
     data = date,                       
     lat = COORDS_create(geometry)$lat,
     long = COORDS_create(geometry)$long,
-    dades_meteo = list(create_DF_GEOM(lat, long, date, date))
-    #T_max = dades_meteo$T_max,
-    #T_min = dades_meteo$T_min,
-    #Hum_max = dades_meteo$Hum_max,
-    #Hum_min = dades_meteo$Hum_min,
-    #Win_max = dades_meteo$Win_max,
-    #Win_min = dades_meteo$Win_min
+    dades_meteo = list(create_DF_GEOM(lat, long, date, date)),
+    T_max = dades_meteo$T_max,
+    T_min = dades_meteo$T_min,
+    Hum_max = dades_meteo$Hum_max,
+    Hum_min = dades_meteo$Hum_min,
+    Win_max = dades_meteo$Win_max,
+    Win_min = dades_meteo$Win_min
   ) %>% 
-  #select(-dades_meteo)  %>%
+  select(-dades_meteo)  %>%
   data.frame()
+
+
 
 date <- as.Date(date)-1
 date <- as.character(date)

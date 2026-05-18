@@ -63,7 +63,6 @@ source("scripts/funcions.R")
 #     -) Creeo una FUNCIÓ
 #     -) Calculara diferents DF x diferents dies
 
-
 comarques_setmana <- function(comarques_punts,date,nom_comarca){
   
   date <- date
@@ -245,6 +244,8 @@ system.time({
 anoia <- create_shape(comarques_punts,"2025-11-07","Anoia")
 
 })
+
+
 
 # ----  GUARDAR SAHPE ----
 # ----------------------
