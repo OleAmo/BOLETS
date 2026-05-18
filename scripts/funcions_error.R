@@ -17,7 +17,7 @@ library(tidyverse)
 #    -) CHATGPT m'ajuda
 
 
-dades_API <- function(lat, long, date_1, date_2){
+dades_API_error <- function(lat, long, date_1, date_2){
   
   resultat <- tryCatch({
     
@@ -75,7 +75,7 @@ for (i in 1:num) {
   long <- COORDS_create(comarques_punts[i,])$long
   
   id <- comarques_punts[i,]$id
-  n <- dades_API(lat,long,date_1,date_1)
+  n <- dades_API_error(lat,long,date_1,date_1)
   T_max <- (max(n$hourly$temperature_2m))
   
   print(paste(id,'-',T_max))
