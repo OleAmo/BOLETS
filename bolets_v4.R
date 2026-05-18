@@ -62,9 +62,10 @@ source("scripts/funcions.R")
 #     -) NO se pk peró PETA en DADES_METO = list(create_DF_GEOM(lat, long, date, date))
 #     -) Curiosament a BOLETS_V3 per crear COMARCA A COMARCA no PETA
 
-
+date <- "2026-11-07"
 
 catalunya <- comarques_punts %>%
+ filter(NOMCOMAR == "Anoia") %>%
   rowwise() %>%
   mutate(
     data = date,                       
