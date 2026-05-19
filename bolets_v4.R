@@ -51,7 +51,7 @@ source("scripts/funcions.R")
 
 
 #  ------- PROBLEMA DADES API ---------
-#  ---------------------------------------------
+#  ------------------------------------
 
 #    -) LÍMIT d'us de API OPEN METEO 
 #    -) Per la API gratuïta d’Open-Meteo els límits són aproximadament:
@@ -59,6 +59,23 @@ source("scripts/funcions.R")
 #    -) 10.000 consultes al dia
 #    -) 5.000 consultes per hora
 #    -) 600 consultes per minut
+
+
+#  ---------- FEINA A FER  ------------
+#  ------------------------------------
+
+#    -) REDUIR PUNTS de CATALUNAY
+#    -) Només els que estan DAMUNT DE BOSCOS
+#    -) Crear PRODUCCIÓ de DADES per LOTS = més efincient i ràpid
+
+
+
+
+
+
+
+
+
 
 
 
