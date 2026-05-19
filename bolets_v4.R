@@ -76,7 +76,7 @@ num <- length(comarques_punts$id)
 num
 
 
-for (i in 1:num) {
+for (i in 1:5) {
   
   comarques_punts[i,]
   lat <- COORDS_create(comarques_punts[i,])$lat
@@ -95,6 +95,16 @@ for (i in 1:num) {
   print(text)
   
 }
+
+#  ------- PROBLEMA DADES API ---------
+#  ---------------------------------------------
+
+#    -) LÍMIT d'us de API OPEN METEO 
+#    -) Per la API gratuïta d’Open-Meteo els límits són aproximadament:
+
+#    -) 10.000 consultes al dia
+#    -) 5.000 consultes per hora
+#    -) 600 consultes per minut
 
 
 
